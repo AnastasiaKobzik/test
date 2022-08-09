@@ -81,11 +81,9 @@ class LogSignClass
 
     function validate(array $request){
         $nameRegEx = "/^[а-я]+$/ui";
-        //$passwordRegEx = "/([A-Za-z][0-9])+[^\s]/";
         $passwordRegEx = "/(?=.+[0-9])(?=.+[a-z])/i";
         $spase = "/[\s]+/";
         $simbol = "/[\W]+/";
-        //$loginRegEx = "/^[а-яa-z0-9]+$/ui";
 
         if (!isset($request['name']) || empty($request['name'])) {
             $this->errors[]['name'] = 'Имя не указано';
