@@ -81,7 +81,11 @@ class LogSignClass
 
     function validate(array $request){
         $nameRegEx = "/^[а-я]+$/ui";
-        $passwordRegEx = "/[A-Za-z]+[0-9]+/";
+        //$passwordRegEx = "/([A-Za-z][0-9])+[^\s]/";
+        $passwordRegEx = "/(?=.+[0-9])(?=.+[a-z])/i";
+        $spase = "/[\s]+/";
+        $simbol = "/[\W]+/";
+        //$loginRegEx = "/^[а-яa-z0-9]+$/ui";
 
         if (!isset($request['name']) || empty($request['name'])) {
             $this->errors[]['name'] = 'Имя не указано';
@@ -95,6 +99,8 @@ class LogSignClass
             $this->errors[]['login'] = 'Логин не указан';
         }elseif (mb_strlen($request['login']) < 6) {
             $this->errors[]['login'] = 'Логин должен быть минимум из 6 символов';
+        }elseif (preg_match($spase,$request['login'])) {
+            $this->errors[]['login'] = 'Логин не может содержать пробелы';
         }
 
         if (!isset($request['email']) || strlen($request['email']) == 0) {
@@ -109,6 +115,8 @@ class LogSignClass
             $this->errors[]['password'] = 'Пароль должен быть минимум из 6 символов';
         }elseif (!preg_match($passwordRegEx,$request['password'])) {
             $this->errors[]['password'] = 'Пароль должен содержать цифры и буквы латинского алфавита';
+        }elseif (preg_match($simbol,$request['password'])) {
+            $this->errors[]['password'] = 'Пароль не может содержать пробелы и спецсимволы';
         }
 
         if (!isset($request['confirmPassword']) || empty($request['confirmPassword'])) {
