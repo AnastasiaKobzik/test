@@ -8,10 +8,8 @@ $('.form-signup').submit(function(e){
     data: $('.form-signup').serialize(),
     success: function(response){
       location.reload();
-      //console.log(response);
     },
     error: function(response, status, error){
-      //console.log(response.responseJSON);
       var errors = response.responseJSON;
       $('.form-control-feedback').text("");
       if (errors.errors) {
@@ -45,8 +43,6 @@ $('.form-login').submit(function(e){
           var field = Object.getOwnPropertyNames (data);
           var value = data[field];
           var div = $("#"+field[0]).closest('div');
-
-          console.log(field[0]);
           div.children('.form-feedback').text(value);
         });
       }

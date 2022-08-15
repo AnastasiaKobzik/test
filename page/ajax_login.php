@@ -1,24 +1,21 @@
 <?php
 
-require("../app/functions.php");
+require("../app/dataBase.php");
+require("../app/service.php");
 
-$logSignClass = new LogSignClass();
+$authValidate = new AuthValidate();
+$dataDase = new DataBase();
+
 if (isset($_SERVER['HTTP_X_REQUESTED_WITH'])) {
     if (!empty($_POST)){
 
         header('Content-Type: application/json');
         
-        $errors = array();
-        if (!isset($_POST['loginIn']) || empty($_POST['loginIn'])){
-            $errors[]['loginIn'] = 'Имя не указано';
-        }
-        if(!isset($_POST['passwordIn']) || empty($_POST['passwordIn'])){
-            $errors[]['passwordIn'] = 'Пароль не указан';
-        }
+        $errors = $authValidate->validate($_POST);
 
         if (empty($errors)){
 
-            $readeErrors = $logSignClass->reade($_POST);
+            $readeErrors = $dataDase->readeUser($_POST);
 
             if ($readeErrors == 0) {
                 

@@ -1,15 +1,18 @@
 <?php
 
-require("../app/functions.php");
+require("../app/dataBase.php");
+require("../app/service.php");
 
-$logSignClass = new LogSignClass();
+$signValidate = new SignValidate();
+$dataDase = new DataBase();
+
 if (isset($_SERVER['HTTP_X_REQUESTED_WITH'])){
    if (!empty($_POST)){
         header('Content-Type: application/json');
-        $errors = $logSignClass->validate($_POST);
+        $errors = $signValidate->validateSign($_POST);
 
         if (empty($errors)) {
-            $createErrors = $logSignClass->create($_POST);
+            $createErrors = $dataDase->createUser($_POST);
             if ($createErrors == 0) {
                 http_response_code(201);
                 
